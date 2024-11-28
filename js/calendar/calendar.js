@@ -37,11 +37,12 @@ let yearHeader = document.getElementById("header-year");
 let today = new Date();
 let selectedMonth = Number(String(today.getMonth() + 1).padStart(2, '0'));
 let selectedYear = today.getFullYear();
-let selectedDate = numToMonth[today.getDay()] + '/' + selectedMonth + '/' + selectedYear;
+let selectedDate = numToMonth[today.getDate()] + '/' + selectedMonth + '/' + selectedYear;
 
 let dayPlanner = document.querySelector('#day-planner');
 let dayPlannerDate = document.querySelector('#day-planner-date');
 let inputEventBox = document.querySelector("#day-planner-event-add-input");
+let calSquareNum = document.getElementsByClassName("calendar-square-num");
 
 /* Handle Clicks*/
 
@@ -100,25 +101,32 @@ function loadCalendarForMonth() {
         }
     }
 
-    let calSquare = document.getElementsByClassName("calendar-square-num");
+    
     let addEventButtons = document.getElementsByClassName("day-planner-event-add");
     
-    for (let i = 0; i < calSquare.length; i++) {
-        calSquare[i].addEventListener('mousedown', function (e) { 
-            loadDayPlanner(selectedMonth,selectedYear,calSquare[i].innerHTML);
+    for (let i = 0; i < calSquareNum.length; i++) {
+        calSquareNum[i].addEventListener('mousedown', function (e) { 
+            /*loadDayPlanner(selectedMonth,selectedYear,calSquareNum[i].innerHTML);
             dayPlanner.style.display = 'flex';
             dayPlanner.style.left = e.clientX + 'px'; 
             dayPlanner.style.top = e.clientY + 'px';
 
-            selectedDate = calSquare[i].innerHTML + '/' + selectedMonth + '/' + selectedYear;
+            selectedDate = calSquareNum[i].innerHTML + '/' + selectedMonth + '/' + selectedYear;*/ 
         }, true); 
     }
 
     for (let x = 0; x < addEventButtons.length; x++) {
         addEventButtons[x].addEventListener('mousedown', function (e) {
-            
             appendEvent(selectedDate, inputEventBox.value);
+            updateSearches({target:{value: ''}})
+            
         }, true); 
+    }
+    highlightCurrentDay();
+    for (let i = 0; i < calendarSquares.length; i++) {
+        calendarSquares[i].addEventListener("mousedown", function(evt) {
+            calendarSquareHandler(i, evt);
+        });
     }
 }
 
@@ -136,3 +144,19 @@ previousMonth.addEventListener('click', () => {
     selectedMonth = selectedMonth - 1;
     loadCalendarForMonth();
 });
+
+
+/* Highlight Current Day */
+
+function highlightCurrentDay() {
+    if ( (selectedMonth == Number(String(today.getMonth() + 1).padStart(2, '0')) ) && (selectedYear == today.getFullYear())) {
+        for (let i=0; i < calSquareNum.length; i++) {
+            if (calSquareNum[i].innerHTML == today.getDate()) {
+                calSquareNum[i].style.color = '#FFFFFF';
+                calSquareNum[i].parentElement.style.backgroundColor = '#e03800';
+            }
+        }   
+    }
+}
+
+highlightCurrentDay();

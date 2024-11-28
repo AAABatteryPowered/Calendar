@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins&display=swap');
+
+.right-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 100%;
+    gap: 6px;
+}
+
+.right-action {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 11px;
+
+    background-color: white;
+    border: none;
+    border-radius: 3px;
+
+    cursor: pointer;
+    transition: 0.2s all ease;
+}
+
+#tool-selection {
+    height: 58.4px;
+    width: 58.4px;
+    font-size: 24px;
+    color: rgb(202, 35, 35);
+    font-family: 'IBM Plex Sans', sans-serif;
+
+}
+
+.right-action img {
+    height: 36.4px;
+    color: antiquewhite;
+}
