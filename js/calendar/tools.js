@@ -10,6 +10,20 @@ let prefoundNumberSquares = {};
 let addEvent = document.getElementById("add-event");
 let selectionTool = document.getElementById("tool-selection");
 
+selectionTool.addEventListener("mousedown", function(evt) {
+    if (currentTool == 'selection') {
+        clearCurrentSelection(0,true,[]);
+        currentTool = 'none';
+        selectionTool.style.backgroundColor = 'white';
+        selectionTool.style.color = '#e03800';
+    } else {
+        currentTool = 'selection';
+        
+        selectionTool.style.backgroundColor = '#e03800';
+        selectionTool.style.color = 'white';
+    }
+});
+
 function findNumberSquare(num) {
     for (let i = 0; i < calendarSquaresNum.length; i++) {
         if (calendarSquaresNum[i].innerHTML == num) {
@@ -18,12 +32,18 @@ function findNumberSquare(num) {
     }
 }
 
-function clearCurrentSelection(i, deselecting) {
+function clearCurrentSelection(i, deselecting, exclude) {
     if (deselecting) {
         if ( (selectedPoints.length > 0 ) && (currentSelection.length > 0) ) {
             for (let i = currentSelection[0]; i < Number([currentSelection[currentSelection.length-1]])+1; i++) {
-                prefoundNumberSquares[i][0].style.backgroundColor = 'white';
-                prefoundNumberSquares[i][1].style.color = 'rgb(202, 35, 35)';
+                if (!(exclude.includes(i))) {
+                    prefoundNumberSquares[i][0].style.backgroundColor = 'white';
+                    prefoundNumberSquares[i][1].style.color = 'rgb(202, 35, 35)';
+                } else {
+                    let [square, num] = findNumberSquare(i);
+                    square.style.backgroundColor = '#4a59ff';
+                    num.style.color = 'white';
+                }
             }
             selectedPoints = [];
             currentSelection = [];
@@ -31,8 +51,14 @@ function clearCurrentSelection(i, deselecting) {
     } else {
         if ( (selectedPoints.length > 0 ) && (currentSelection.length > 0) ) {
             for (let i = currentSelection[0]; i < Number([currentSelection[currentSelection.length-1]])+1; i++) {
-                prefoundNumberSquares[i][0].style.backgroundColor = 'white';
-                prefoundNumberSquares[i][1].style.color = 'rgb(202, 35, 35)';
+                if (!(exclude.includes(i))) {
+                    prefoundNumberSquares[i][0].style.backgroundColor = 'white';
+                    prefoundNumberSquares[i][1].style.color = 'rgb(202, 35, 35)';
+                } else {
+                    let [square, num] = findNumberSquare(i);
+                    square.style.backgroundColor = '#4a59ff';
+                    num.style.color = 'white';
+                }
             }
             selectedPoints = [i+1];
             currentSelection = [];
@@ -48,7 +74,6 @@ function calendarSquareHandler(i,evt) {
         square.style.backgroundColor = '#4a59ff';
         num.style.color = 'white';
         if (selectedPoints.length > 1 && selectedPoints.length < 3) {
-
             let startPoint = selectedPoints[0];
             let endPoint = selectedPoints[1];
 
@@ -71,10 +96,16 @@ function calendarSquareHandler(i,evt) {
             })*/
 
         } else {
-            clearCurrentSelection(i, false);
+            if (selectedPoints.length > 2) {
+                let [square, num] = findNumberSquare(i+1);
+                prefoundNumberSquares[i+1] = [square,num];
+                square.style.backgroundColor = '#4a59ff';
+                num.style.color = 'white';
+            }
+            clearCurrentSelection(i, false, [i+1]);
+            
         }
     }
-    console.log(selectedPoints,currentSelection);
 }
 
 for (let i = 0; i < calendarSquares.length; i++) {
@@ -85,18 +116,7 @@ for (let i = 0; i < calendarSquares.length; i++) {
 
 addEvent.addEventListener("mousedown", function(evt) {
     console.log(currentSelection, selectedPoints);
+    appendEvent('test', currentSelection, selectedMonth,selectedYear);
+    console.log(allEvents);
 });
 
-selectionTool.addEventListener("mousedown", function(evt) {
-    if (currentTool == 'selection') {
-        currentTool = 'none';
-        clearCurrentSelection(0,true);
-        selectionTool.style.backgroundColor = 'white';
-        selectionTool.style.color = '#e03800';
-    } else {
-        currentTool = 'selection';
-        
-        selectionTool.style.backgroundColor = '#e03800';
-        selectionTool.style.color = 'white';
-    }
-});

@@ -1,15 +1,26 @@
 let allEvents = {
-    
+
 };
 
 let searchEventsInputBox = document.querySelector('#search-event');
 let eventsList = document.querySelector('#events-list');
 
-function appendEvent(name, timespan) {
-    if (allEvents[date]) {
-        allEvents[date].push(event);
+function appendEvent(name, timespan, month, year) {
+    if (allEvents[name]) {
+        console.log(timespan.length)
+        for (i=0;i<timespan.length;i++) {
+            if (!(allEvents[name].days.includes(timespan[i]))) {
+                console.log(timespan[i]);
+                allEvents[name].days.push(timespan[i]);
+            }
+        }
     } else {
-        allEvents[date] = [event];
+        allEvents[name] = {
+            days: timespan,
+            month: month,
+            year: year
+        };
+
     }
 }
 
