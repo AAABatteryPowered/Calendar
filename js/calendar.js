@@ -37,17 +37,15 @@ let yearHeader = document.getElementById("header-year");
 let today = new Date();
 let selectedMonth = Number(String(today.getMonth() + 1).padStart(2, '0'));
 let selectedYear = today.getFullYear();
+let selectedDate = numToMonth[today.getDay()] + '/' + selectedMonth + '/' + selectedYear;
 
 let dayPlanner = document.querySelector('#day-planner');
 let dayPlannerDate = document.querySelector('#day-planner-date');
+let inputEventBox = document.querySelector("#day-planner-event-add-input");
 
 /* Handle Clicks*/
 
 document.body.addEventListener("mousedown", function (evt) {
-    /*if (evt.target.id != 'day-planner') {
-    if (dayPlanner.style.display == 'flex') {
-        dayPlanner.style.display = 'none';
-    }*/
    if (evt.target.className == 'container' && evt.target.id == '') {
         dayPlanner.style.display = 'none';
    }
@@ -69,11 +67,7 @@ function numToDayTh(num) {
 }
 
 function loadDayPlanner(month,year,day) {
-    let htmlStringToInsert = `
-        <p id='day-planner-date'>`+ numToDayTh(day) + ' ' + numToMonth[month]; +`</p>
-    `  
-
-    dayPlannerDate.innerHTML = htmlStringToInsert
+    dayPlannerDate.innerHTML = numToDayTh(day) + ' ' + numToMonth[month];
 }
 
 function loadCalendarForMonth() {
@@ -107,15 +101,23 @@ function loadCalendarForMonth() {
     }
 
     let calSquare = document.getElementsByClassName("calendar-square-num");
+    let addEventButtons = document.getElementsByClassName("day-planner-event-add");
     
     for (let i = 0; i < calSquare.length; i++) {
         calSquare[i].addEventListener('mousedown', function (e) { 
-            // set mouse state to true 
             loadDayPlanner(selectedMonth,selectedYear,calSquare[i].innerHTML);
             dayPlanner.style.display = 'flex';
             dayPlanner.style.left = e.clientX + 'px'; 
-            dayPlanner.style.top = e.clientY + 'px'; 
-            //e.preventDefault();
+            dayPlanner.style.top = e.clientY + 'px';
+
+            selectedDate = calSquare[i].innerHTML + '/' + selectedMonth + '/' + selectedYear;
+        }, true); 
+    }
+
+    for (let x = 0; x < addEventButtons.length; x++) {
+        addEventButtons[x].addEventListener('mousedown', function (e) {
+            
+            appendEvent(selectedDate, inputEventBox.value);
         }, true); 
     }
 }
@@ -133,4 +135,4 @@ nextMonth.addEventListener('click', () => {
 previousMonth.addEventListener('click', () => {
     selectedMonth = selectedMonth - 1;
     loadCalendarForMonth();
-})
+});
