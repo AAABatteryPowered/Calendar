@@ -12,8 +12,8 @@ let selectionTool = document.getElementById("tool-selection");
 
 selectionTool.addEventListener("mousedown", function(evt) {
     if (currentTool == 'selection') {
-        clearCurrentSelection(0,true,[]);
         currentTool = 'none';
+        clearCurrentSelection(0,true,[]);
         selectionTool.style.backgroundColor = 'white';
         selectionTool.style.color = '#e03800';
     } else {
@@ -34,16 +34,25 @@ function findNumberSquare(num) {
 
 function clearCurrentSelection(i, deselecting, exclude) {
     if (deselecting) {
-        if ( (selectedPoints.length > 0 ) && (currentSelection.length > 0) ) {
+        if ( selectedPoints.length > 0  ) {
             for (let i = currentSelection[0]; i < Number([currentSelection[currentSelection.length-1]])+1; i++) {
                 if (!(exclude.includes(i))) {
-                    prefoundNumberSquares[i][0].style.backgroundColor = 'white';
-                    prefoundNumberSquares[i][1].style.color = 'rgb(202, 35, 35)';
+                    let [square, num] = findNumberSquare(i);
+                    square.style.backgroundColor = 'white';
+                    num.style.color = 'rgb(202, 35, 35)';
                 } else {
                     let [square, num] = findNumberSquare(i);
                     square.style.backgroundColor = '#4a59ff';
                     num.style.color = 'white';
                 }
+            }
+            if (selectedPoints.length > 0) {
+                for (let i = 0; i < selectedPoints.length; i++) {
+                    let [square, num] = findNumberSquare(selectedPoints[i]);
+                    square.style.backgroundColor = 'white';
+                    num.style.color = 'rgb(202, 35, 35)';
+                }
+                
             }
             selectedPoints = [];
             currentSelection = [];

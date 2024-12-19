@@ -5,6 +5,13 @@ let allEvents = {
 let searchEventsInputBox = document.querySelector('#search-event');
 let eventsList = document.querySelector('#events-list');
 
+let eventStruct = {
+    startDate: [7,4,2024],
+    endDate: [9,6,2025],
+    StartEndTimes: ['1500','1905'],
+    tags: []
+}
+
 function appendEvent(name, timespan, month, year) {
     if (allEvents[name]) {
         console.log(timespan.length)
@@ -16,11 +23,11 @@ function appendEvent(name, timespan, month, year) {
         }
     } else {
         allEvents[name] = {
-            days: timespan,
-            month: month,
-            year: year
+            startDate: [7,4,2024],
+            endDate: [9,6,2025],
+            StartEndTimes: ['1500','1905'],
+            tags: []
         };
-
     }
 }
 

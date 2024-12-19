@@ -1,31 +1,56 @@
-const monthDates = {
-    "January": 31,
-    "February": [28,29],
-    "March": 31,
-    "April": 30,
-    "May": 31,
-    "June": 30,
-    "July": 31,
-    "August": 31,
-    "September": 30,
-    "October": 31,
-    "November": 30,
-    "December": 31
-}
 
-const numToMonth = {
-    1: "January",
-    2: "February",
-    3: "March",
-    4: "April",
-    5: "May",
-    6: "June",
-    7: "July",
-    8: "August",
-    9: "September",
-    10: "October",
-    11: "November",
-    12: "December",
+
+
+class Calendar {
+    constructor() {
+        
+    }
+    year_number_to_full_year(year) {
+        let returningYear = {
+            "January": 31,
+            "February": 28,
+            "March": 31,
+            "April": 30,
+            "May": 31,
+            "June": 30,
+            "July": 31,
+            "August": 31,
+            "September": 30,
+            "October": 31,
+            "November": 30,
+            "December": 31
+        }
+        if (selectedYear % 4 == 0) {
+            // Leap Year
+            returningYear.February = 29;
+            return returningYear
+        } else {
+            return returningYear
+        }
+    }
+    num_to_dayth(num) {
+        if (num == 1 || num == 21 || num == 31) {
+            return num + 'st';
+        } else if (num == 2 || num == 22) {
+            return num + 'nd';
+        } else if (num == 3 || num == 23) {
+            return num + 'rd';
+        } else {
+            return num + 'th';
+        }
+    }
+    num_to_month(num) {
+        const numToMonth = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+        let keys = numToMonth.keys()
+        if (keys.includes(num-1)) {return numToMonth[num-1]}
+    }
+    change_date(day,month,year) {
+        
+    }
+    update_calendar() {
+
+    }
 }
 
 let calendar = document.getElementById("calendar")
@@ -51,18 +76,6 @@ document.body.addEventListener("mousedown", function (evt) {
     dayPlanner.style.display = 'none';
     }
 });
-
-function numToDayTh(num) {
-    if (num == 1 || num == 21 || num == 31) {
-        return num + 'st';
-    } else if (num == 2 || num == 22) {
-        return num + 'nd';
-    } else if (num == 3 || num == 23) {
-        return num + 'rd';
-    } else {
-        return num + 'th';
-    }
-}
 
 function loadDayPlanner(month,year,day) {
     dayPlannerDate.innerHTML = numToDayTh(day) + ' ' + numToMonth[month];
@@ -100,17 +113,6 @@ function loadCalendarForMonth() {
 
     
     let addEventButtons = document.getElementsByClassName("day-planner-event-add");
-    
-    for (let i = 0; i < calSquareNum.length; i++) {
-        calSquareNum[i].addEventListener('mousedown', function (e) { 
-            /*loadDayPlanner(selectedMonth,selectedYear,calSquareNum[i].innerHTML);
-            dayPlanner.style.display = 'flex';
-            dayPlanner.style.left = e.clientX + 'px'; 
-            dayPlanner.style.top = e.clientY + 'px';
-
-            selectedDate = calSquareNum[i].innerHTML + '/' + selectedMonth + '/' + selectedYear;*/ 
-        }, true); 
-    }
 
     for (let x = 0; x < addEventButtons.length; x++) {
         addEventButtons[x].addEventListener('mousedown', function (e) {
